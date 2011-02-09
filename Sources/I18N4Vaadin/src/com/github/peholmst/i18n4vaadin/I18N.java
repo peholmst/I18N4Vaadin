@@ -19,6 +19,12 @@ import java.util.Collection;
 import java.util.Locale;
 
 /**
+ * This interface is the main entry point to I18N4Vaadin. Instances of
+ * <code>I18N</code> are {@link com.vaadin.Application}-specific and maintain
+ * information about the currently selected locale and all the available
+ * locales. {@link I18NListener}s can be notified when the current locale
+ * changes. The {@link #getMessage(String, Object...)} method retrieves
+ * localized messages that can be formatted.
  * 
  * @author Petter Holmström
  * @since 1.0
@@ -55,8 +61,12 @@ public interface I18N extends java.io.Serializable {
 
 	/**
 	 * Tries to resolve the message using the locale returned by
-	 * {@link #getCurrentLocale()Locale()}. If the message cannot be found, a standard
-	 * implementation specific string is returned instead (usually an empty string).
+	 * {@link #getCurrentLocale()}. If the message cannot be found, a standard
+	 * implementation specific string is returned instead (usually an empty
+	 * string). The message may contain {@link java.text.MessageFormat}
+	 * arguments.
+	 * 
+	 * @see java.text.MessageFormat
 	 * 
 	 * @param code
 	 *            the code to look up (must not be <code>null</code>).
@@ -65,13 +75,14 @@ public interface I18N extends java.io.Serializable {
 	 *            the message (params look like "{0}", "{1,date}", "{2,time}"),
 	 *            or <code>null</code> if there are none.
 	 * @return the resolved message (never <code>null</code>).
-	 */	
+	 * @throws IllegalStateException if no current locale has been set.
+	 */
 	String getMessage(String code, Object... args) throws IllegalStateException;
 
 	/**
-	 * Registers a listener to be notified when the current locale changes. A listener can
-	 * be registered several times and will be notified once for each
-	 * registration. If the listener is <code>null</code>, nothing happens.
+	 * Registers a listener to be notified when the current locale changes. A
+	 * listener can be registered several times and will be notified once for
+	 * each registration. If the listener is <code>null</code>, nothing happens.
 	 * 
 	 * @param listener
 	 *            the listener to add.

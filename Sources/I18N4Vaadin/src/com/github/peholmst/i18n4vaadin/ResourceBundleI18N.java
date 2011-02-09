@@ -34,7 +34,7 @@ public class ResourceBundleI18N extends AbstractI18N {
 
 	private static final long serialVersionUID = 783545870292525859L;
 
-	private ResourceBundle currentBundle;
+	private transient ResourceBundle currentBundle;
 
 	private String baseName;
 

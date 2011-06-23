@@ -37,13 +37,15 @@
 	</target>
 
 	<target name="build-addon-jar" depends="compile-addon">
-		<jar basedir="${addon.build.dir}" compress="true" encoding="utf-8" destfile="${addon.jar}">
+		<jar compress="true" encoding="utf-8" destfile="${addon.jar}">
 			<manifest>
 				<attribute name="Vaadin-Package-Version" value="1"/>
 				<attribute name="Implementation-Title" value="${ant.project.name}"/>
 				<attribute name="Implementation-Version" value="${i18n4vaadin.version}"/>
 				<attribute name="Implementation-Vendor" value="Petter Holmström"/>
 			</manifest>
+			<fileset dir="${addon.build.dir}" includes="**"/>
+			<fileset dir="${addon.src.dir}" includes="**"/>
 		</jar>
 	</target>
 	

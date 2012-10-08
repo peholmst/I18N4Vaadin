@@ -19,6 +19,7 @@ import com.github.peholmst.i18n4vaadin.annotations.Message;
 import com.github.peholmst.i18n4vaadin.annotations.Messages;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +37,7 @@ import javax.lang.model.element.PackageElement;
 final class PackageInfo {
 
     private final Map<Locale, List<Message>> messageMap = new HashMap<Locale, List<Message>>();
+    private final Set<String> messageKeys = new HashSet<String>();
     private final PackageMap owner;
     private final PackageElement pkg;
 
@@ -67,6 +69,7 @@ final class PackageInfo {
             messageList = new LinkedList<Message>();
             messageMap.put(locale, messageList);
         }
+        messageKeys.add(message.key());
         messageList.add(message);
     }
 
@@ -83,6 +86,10 @@ final class PackageInfo {
         } else {
             return Collections.unmodifiableList(messageList);
         }
+    }
+    
+    Set<String> getMessageKeys() {
+        return Collections.unmodifiableSet(messageKeys);
     }
 
     PackageInfo getParent() {

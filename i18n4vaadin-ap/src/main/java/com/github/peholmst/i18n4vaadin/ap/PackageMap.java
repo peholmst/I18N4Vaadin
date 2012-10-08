@@ -69,4 +69,8 @@ final class PackageMap {
         }
         return subPackages;
     }
+    
+    Set<PackageInfo> getAllPackages() {
+        return new HashSet<PackageInfo>(packages.values());
+    }
 }

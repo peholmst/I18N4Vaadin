@@ -15,8 +15,6 @@
  */
 package com.github.peholmst.i18n4vaadin.ap;
 
-import com.github.peholmst.i18n4vaadin.annotations.BundleGeneration;
-import com.github.peholmst.i18n4vaadin.annotations.BundleStrategy;
 import com.github.peholmst.i18n4vaadin.annotations.Message;
 import com.github.peholmst.i18n4vaadin.annotations.Messages;
 import java.util.Set;
@@ -26,7 +24,6 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
 /**
@@ -40,8 +37,7 @@ import javax.lang.model.element.TypeElement;
  * @author Petter Holmström
  */
 @SupportedAnnotationTypes({AnnotationProcessor.ANNOTATION_PACKAGE + ".Message",
-    AnnotationProcessor.ANNOTATION_PACKAGE + ".Messages",
-    AnnotationProcessor.ANNOTATION_PACKAGE + ".BundleGeneration"})
+    AnnotationProcessor.ANNOTATION_PACKAGE + ".Messages"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class AnnotationProcessor extends AbstractProcessor {
 
@@ -50,19 +46,14 @@ public class AnnotationProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         final PackageMap packageMap = buildPackageMap(roundEnv);
-        for (final PackageInfo rootPackage : packageMap.getRootPackages()) {
-            getStrategy(rootPackage.getBundleGeneration()).process(rootPackage);
-        }
+        new BundleFileGenerator(processingEnv).process(packageMap);
+        new JavaFileGenerator(processingEnv).process(packageMap);
         return true;
     }
 
     private PackageMap buildPackageMap(final RoundEnvironment roundEnv) {
         final PackageMap map = new PackageMap();
 
-        for (final Element element : roundEnv.getElementsAnnotatedWith(BundleGeneration.class)) {
-            // @BundleGeneration can only be placed on packages, so no need to check the kind
-            map.addPackage((PackageElement) element);
-        }
         for (final Element element : roundEnv.getElementsAnnotatedWith(Message.class)) {
             map.getPackage(Utils.getPackage(element)).addMessage(element.getAnnotation(Message.class));
         }
@@ -71,17 +62,5 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         return map;
-    }
-
-    private AbstractBundleStrategy getStrategy(final BundleGeneration bundleGeneration) {
-        if (bundleGeneration.strategy() == BundleStrategy.INHERITING_PACKAGE_BUNDLES) {
-            return new InheritingPackageStrategy(processingEnv);
-        } else if (bundleGeneration.strategy() == BundleStrategy.SINGLE_ROOT_BUNDLE) {
-            return new SingleRootBundleStrategy(processingEnv);
-        } else if (bundleGeneration.strategy() == BundleStrategy.STANDALONE_PACKAGE_BUNDLES) {
-            return new StandalonePackageStrategy(processingEnv);
-        } else {
-            throw new UnsupportedOperationException("Unknown bundle strategy");
-        }
     }
 }

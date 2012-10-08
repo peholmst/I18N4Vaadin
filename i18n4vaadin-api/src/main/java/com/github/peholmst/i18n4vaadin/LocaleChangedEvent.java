@@ -15,7 +15,7 @@
  */
 package com.github.peholmst.i18n4vaadin;
 
-import com.github.peholmst.i18n4vaadin.annotations.Locale;
+import java.util.Locale;
 
 /**
  * Event fired by {@link I18N}-implementations when the current locale is

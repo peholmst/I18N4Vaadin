@@ -17,23 +17,23 @@ import javax.inject.Inject;
  */
 @Generated(value = "${generator}", date = "${generationDate}")
 @SessionScoped
-public class Bundle implements com.github.peholmst.i18n4vaadin.Bundle {
+public class Bundle implements java.io.Serializable {
 
     private transient ResourceBundle bundle;
 
     @Inject
     @SessionScoped
-    private I18N i18n;
+    I18N i18n;
 
     private Locale getLocale() {
         return i18n.getLocale();
     }
 
-    protected void localeChanged(@Observes(notifyObserver = Reception.IF_EXISTS) LocaleChangedEvent event) {
+    void localeChanged(@Observes(notifyObserver = Reception.IF_EXISTS) LocaleChangedEvent event) {
         bundle = null;
     }
 
-    private ResourceBundle getBundle() {
+    ResourceBundle getBundle() {
         if (bundle == null) {
             bundle = ResourceBundle.getBundle("${packageName}.messages", getLocale());
         }
@@ -41,23 +41,22 @@ public class Bundle implements com.github.peholmst.i18n4vaadin.Bundle {
     }
 
 #foreach ($property in $properties)
-
     public String $property.replace('.','_')(Object... args) {
         return getMessage("$property", args);
     }
-
-    public static final String $property.replace('.','_').toUpperCase() = "$property";
-
 #end
 
-    @Override
-    public String getMessage(String key, Object... args) {
-        final MessageFormat mf = new MessageFormat(getBundle().getString(key), getLocale());
-        return mf.format(args, new StringBuffer(), null).toString();
+    public static final class Keys {
+
+        private Keys() {
+        }
+#foreach ($property in $properties)
+        public static final String $property.replace('.','_') = "$property";
+#end
     }
 
-    @Override
-    public boolean containsKey(String key) {
-        return getBundle().containsKey(key);
+    String getMessage(String key, Object... args) {
+        final MessageFormat mf = new MessageFormat(getBundle().getString(key), getLocale());
+        return mf.format(args, new StringBuffer(), null).toString();
     }
 }

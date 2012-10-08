@@ -15,7 +15,6 @@
  */
 package com.github.peholmst.i18n4vaadin.ap;
 
-import com.github.peholmst.i18n4vaadin.Bundle;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
@@ -26,8 +25,8 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 
 /**
- * Class for generating the classes implementing {@link Bundle}. <p><b>This
- * class is internal and should never be used by clients.</b>
+ * Class for generating the classes that are used to access the bundle files.
+ * <p><b>This class is internal and should never be used by clients.</b>
  *
  * @author Petter Holmström
  */

@@ -22,8 +22,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * TODO Document me!
- * 
+ * This annotation defines a single message in a message bundle. An annotation
+ * processor will automatically generate a bundle file (named
+ * {@code messages.properties}) and a bundle class (named {@code Bundle}) for
+ * each package that this annotation is used in. The bundle class contains
+ * static getter methods for retrieving the messages. <p> For example, let's say
+ * you have a
+ * <code>&#064;Message</code> annotation on a class in the {@code foo.bar}
+ * package, like this:
+ * <code>&#064;Message(key="mykey", value="my value")</code>. The annotation
+ * processor will create a {@code message.properties} file in the
+ * {@code foo.bar} package containing the following: {@code mykey=my value} (if
+ * there are more annotations in the same package, these strings will also be
+ * included). Clients can then use {@code Bundle.mykey()} to actually retrieve
+ * the message string. <p> If you also specify a locale, a separate bundle file
+ * containing the messages for that particular locale will be created.
+ *
+ * @see Messages
+ *
  * @author Petter Holmström
  */
 @Target({ElementType.CONSTRUCTOR, ElementType.FIELD,
@@ -34,20 +50,18 @@ import java.lang.annotation.Target;
 public @interface Message {
 
     /**
-     *
-     * @return
+     * The key can be used to identify the message in the bundle.
      */
     String key();
-    
+
     /**
-     *
-     * @return
+     * The value of the message to be stored in the bundle.
      */
     String value();
 
     /**
-     *
-     * @return
+     * The locale of the bundle. By default, the default bundle without any
+     * locale information will be used (i.e. {@code messages.properties}).
      */
     Locale locale() default @Locale(language = "");
 }

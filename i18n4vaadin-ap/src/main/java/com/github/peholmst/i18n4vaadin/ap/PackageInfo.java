@@ -15,11 +15,8 @@
  */
 package com.github.peholmst.i18n4vaadin.ap;
 
-import com.github.peholmst.i18n4vaadin.annotations.BundleGeneration;
-import com.github.peholmst.i18n4vaadin.annotations.BundleStrategy;
 import com.github.peholmst.i18n4vaadin.annotations.Message;
 import com.github.peholmst.i18n4vaadin.annotations.Messages;
-import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -57,30 +54,6 @@ final class PackageInfo {
 
     PackageElement getElement() {
         return pkg;
-    }
-
-    BundleGeneration getBundleGeneration() {
-        final BundleGeneration bundleGeneration = pkg.getAnnotation(BundleGeneration.class);
-        if (bundleGeneration == null) {
-            final PackageInfo parent = getParent();
-            if (parent == null) {
-                return new BundleGeneration() {
-                    @Override
-                    public BundleStrategy strategy() {
-                        return BundleStrategy.STANDALONE_PACKAGE_BUNDLES;
-                    }
-
-                    @Override
-                    public Class<? extends Annotation> annotationType() {
-                        return BundleGeneration.class;
-                    }
-                };
-            } else {
-                return parent.getBundleGeneration();
-            }
-        } else {
-            return bundleGeneration;
-        }
     }
 
     Set<Locale> getLocales() {

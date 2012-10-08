@@ -45,7 +45,7 @@ public interface I18N extends java.io.Serializable {
      * @throws IllegalArgumentException if {@code locale} is {@code null} or not
      * supported.
      */
-    void setLocale(Locale locale) throws IllegalArgumentException;
+    void setLocale(Locale locale);
 
     /**
      * Gets a collection of supported locales. By default, this collection

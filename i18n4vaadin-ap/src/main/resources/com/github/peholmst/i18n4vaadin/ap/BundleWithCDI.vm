@@ -22,7 +22,6 @@ public class Bundle implements java.io.Serializable {
     private transient ResourceBundle bundle;
 
     @Inject
-    @SessionScoped
     I18N i18n;
 
     private Locale getLocale() {

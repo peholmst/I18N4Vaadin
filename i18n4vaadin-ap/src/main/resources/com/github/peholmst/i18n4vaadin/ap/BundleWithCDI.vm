@@ -55,7 +55,7 @@ public class Bundle implements java.io.Serializable {
 #end
     }
 
-    String getMessage(String key, Object... args) {
+    public String getMessage(String key, Object... args) {
         final MessageFormat mf = new MessageFormat(getBundle().getString(key), getLocale());
         return mf.format(args, new StringBuffer(), null).toString();
     }

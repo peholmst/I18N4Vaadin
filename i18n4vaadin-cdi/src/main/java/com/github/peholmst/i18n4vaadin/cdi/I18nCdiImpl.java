@@ -40,7 +40,6 @@ public class I18nCdiImpl implements I18N {
     private Set<Locale> supportedLocales;
     private Locale locale;
     @Inject
-    @SessionScoped
     Event<LocaleChangedEvent> localeChangedEvent;
 
     public I18nCdiImpl() {

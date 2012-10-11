@@ -23,19 +23,20 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation is used to bind the {@code locale} JavaBean property of the
- * annotated element to the current locale. If the annotated element is a class,
- * it's {@code locale} property will be automatically updated when the current
- * locale is changed, provided that the instance of the class is managed by
- * CDI.<p> If the annotated element is a field, the {@code locale} property of
- * the field value will be automatically updated when the current locale is
- * changed, provided that the field value is injected using CDI.
+ * annotated element to the current locale. When the current locale is changed,
+ * the property is automatically updated.<p> If the annotated element is a
+ * class, the {@code locale} property of all CDI-managed instances will be
+ * automatically updated when the current locale is changed. <p> If the
+ * annotated element is an injection point (such as a field, parameter or
+ * constructor), the {@code locale} property of the injected instance will be
+ * automatically updated when the current locale changes.
  *
  * @see com.github.peholmst.i18n4vaadin.I18N#getLocale()
  *
  * @author Petter Holmström
  */
-@Target({ElementType.FIELD, ElementType.TYPE})
-@Retention(value = RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.CONSTRUCTOR, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface I18nBindLocale {
 }

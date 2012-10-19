@@ -27,7 +27,7 @@ import javax.enterprise.inject.spi.AnnotatedType;
 
 /**
  * Configurer that looks for {@link I18N} fields annotated with
- * {@link SupportedLocales} and configures the {@link I18N} instance to support
+ * {@link I18nSupportedLocales} and configures the {@link I18N} instance to support
  * the specified locales.
  *
  * @see I18N#setSupportedLocales(java.util.Collection)

@@ -1,28 +1,24 @@
-I18N4Vaadin README
-==================
-Copyright (c) 2011 Petter Holmström.
+I18N4Vaadin 2.0 README
+======================
+Copyright (c) 2011, 2012 Petter Holmström.
 Licensed under the Apache License, Version 2.0
 
-
 I18N4Vaadin is a small add-on for Vaadin intented to make it easier to create localized applications.
+Version 2.0 is designed for Vaadin 7 and CDI.
 
+BUILDING I18N4Vaadin 2.0
+------------------------
 
-BUILDING I18N4Vaadin
---------------------
+In order to build I18N4Vaadin, you need Java SDK 6 and Maven 3.
 
-In order to build I18N4Vaadin, you need Java SDK 6 and Ant 1.6 or later. The other dependencies
-are included in this source code repository.
+Fire up a command line and execute the following commands:
 
-Fire up a command line and execute the following command:
-
-  $ ant all
+  $ cd parent
+  $ mvn install
   
-This will create both the add-on JAR and the WAR for the demo application in the build-directory.
 
-USING I18N4Vaadin
------------------
+USING I18N4Vaadin 2.0
+---------------------
 
-Please go to the following location for more information about using I18N4Vaadin:
-
-  https://github.com/peholmst/I18N4Vaadin/wiki/Quick-Reference
+Documentation has not been written yet as the project is still in alpha-stage.
   

@@ -20,7 +20,6 @@ import com.github.peholmst.i18n4vaadin.cdi.annotations.I18nSupportedLocales;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.AnnotatedField;
@@ -39,18 +38,17 @@ import javax.enterprise.inject.spi.AnnotatedType;
 class SupportedLocalesConfigurer implements I18nConfigurer {
 
     private static final Logger log = Logger.getLogger(SupportedLocalesConfigurer.class.getName());
-    private static final Level logLevel = Level.INFO;
 
     @Override
     public <T> void configure(AnnotatedType<T> annotatedType, T instance) {
         for (AnnotatedField<? super T> field : annotatedType.getFields()) {
             if (field.isAnnotationPresent(I18nSupportedLocales.class) && I18N.class.isAssignableFrom(field.getJavaMember().getType())) {
-                log.log(logLevel, "Configuring supported locales on field {0}", field.getJavaMember().toString());
+                log.log(Utils.logLevel, "Configuring supported locales on field {0}", field.getJavaMember().toString());
                 final I18N i18n = Utils.getFieldValue(I18N.class, field.getJavaMember(), instance);
                 final List<Locale> supportedLocales = new LinkedList<Locale>();
                 for (com.github.peholmst.i18n4vaadin.annotations.Locale localeAnnotation : field.getAnnotation(I18nSupportedLocales.class).value()) {
                     final Locale locale = new Locale(localeAnnotation.language(), localeAnnotation.country(), localeAnnotation.variant());
-                    log.log(logLevel, "Found supported locale {0}", locale);
+                    log.log(Utils.logLevel, "Found supported locale {0}", locale);
                     supportedLocales.add(locale);
                 }
                 i18n.setSupportedLocales(supportedLocales);

@@ -16,6 +16,7 @@
 package com.github.peholmst.i18n4vaadin.cdi;
 
 import java.lang.reflect.Field;
+import java.util.logging.Level;
 
 /**
  * Collection of utility methods for internal use.
@@ -25,6 +26,8 @@ import java.lang.reflect.Field;
 final class Utils {
     
     private Utils() {}
+    
+    static final Level logLevel = Level.INFO;    
     
     static <T> T getFieldValue(Class<T> type, Field field, Object instance) {
         field.setAccessible(true);

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -37,6 +38,7 @@ import javax.inject.Inject;
 @SessionScoped
 public class I18nCdiImpl implements I18N {
 
+    private static final Logger log = Logger.getLogger(I18nCdiImpl.class.getName());
     private Set<Locale> supportedLocales;
     private Locale locale;
     @Inject
@@ -50,6 +52,9 @@ public class I18nCdiImpl implements I18N {
 
     @Override
     public Locale getLocale() {
+        if (locale == null) {
+            throw new IllegalStateException("No locales have been configured yet");
+        }
         return locale;
     }
 
@@ -62,6 +67,7 @@ public class I18nCdiImpl implements I18N {
     }
 
     private void doSetLocale(final Locale locale) {
+        log.log(Utils.logLevel, "Setting locale to {0} and firing LocaleChangedEvent", locale);
         this.locale = locale;
         localeChangedEvent.fire(new LocaleChangedEvent(this, locale));
     }
@@ -78,9 +84,14 @@ public class I18nCdiImpl implements I18N {
         } else if (supportedLocales.isEmpty()) {
             throw new IllegalArgumentException("At least one supported locale must be specified");
         }
-        this.supportedLocales = new HashSet<Locale>(supportedLocales);
-        if (!supportedLocales.contains(locale)) {
-            doSetLocale(supportedLocales.iterator().next());
+        if (this.supportedLocales == null
+                || this.supportedLocales.size() != supportedLocales.size()
+                || !this.supportedLocales.containsAll(supportedLocales)) {
+            this.supportedLocales = new HashSet<Locale>(supportedLocales);
+            log.log(Utils.logLevel, "Setting supported locales to {0}", this.supportedLocales);
+            if (!supportedLocales.contains(locale)) {
+                doSetLocale(supportedLocales.iterator().next());
+            }
         }
     }
 }

@@ -16,6 +16,7 @@
 package com.github.peholmst.i18n4vaadin.cdi;
 
 import com.github.peholmst.i18n4vaadin.I18N;
+import com.github.peholmst.i18n4vaadin.cdi.annotations.DisableI18n;
 import com.github.peholmst.i18n4vaadin.cdi.annotations.I18nSupportedLocales;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +36,7 @@ import javax.enterprise.inject.spi.AnnotatedType;
  * @author Petter Holmström
  */
 @ApplicationScoped
+@DisableI18n
 class SupportedLocalesConfigurer implements I18nConfigurer {
 
     private static final Logger log = Logger.getLogger(SupportedLocalesConfigurer.class.getName());

@@ -15,11 +15,12 @@
  */
 package com.github.peholmst.i18n4vaadin.cdi;
 
+import com.github.peholmst.i18n4vaadin.cdi.annotations.DisableI18n;
 import java.util.Set;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.AnnotatedType;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -27,7 +28,6 @@ import javax.enterprise.inject.spi.InjectionTarget;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessBean;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
-import javax.inject.Inject;
 
 /**
  * TODO Document me!
@@ -36,11 +36,10 @@ import javax.inject.Inject;
  */
 public class I18nCdiExtension implements Extension {
 
-    @Inject
-    Instance<I18nConfigurer> configurers;
-
     <X> void processInjectionTarget(@Observes ProcessInjectionTarget<X> pit, BeanManager beanManager) {
-        pit.setInjectionTarget(new I18nInjectionTarget<X>(pit.getInjectionTarget(), beanManager));
+        if (!pit.getAnnotatedType().isAnnotationPresent(DisableI18n.class)) {
+            pit.setInjectionTarget(new I18nInjectionTarget<X>(pit.getInjectionTarget(), pit.getAnnotatedType(), beanManager));
+        }
     }
 
     <X> void processBean(@Observes ProcessBean<X> pb) {
@@ -53,18 +52,23 @@ public class I18nCdiExtension implements Extension {
 
         private final InjectionTarget<T> delegate;
         private final BeanManager beanManager;
-
-        public I18nInjectionTarget(InjectionTarget<T> delegate, BeanManager beanManager) {
+        private final AnnotatedType<T> at;
+        
+        public I18nInjectionTarget(InjectionTarget<T> delegate, AnnotatedType<T> at, BeanManager beanManager) {
             this.delegate = delegate;
             this.beanManager = beanManager;
+            this.at = at;
         }
 
         @Override
         public void inject(T instance, CreationalContext<T> ctx) {
             delegate.inject(instance, ctx);
-            final AnnotatedType<T> at = (AnnotatedType<T>) beanManager.createAnnotatedType(instance.getClass());
-            for (I18nConfigurer configurer : configurers) {
-                configurer.configure(at, instance);
+            if (!I18nConfigurer.class.isAssignableFrom(instance.getClass())) {
+                for (Bean<?> configurerBean : beanManager.getBeans(I18nConfigurer.class)) {
+                    I18nConfigurer configurer = (I18nConfigurer) beanManager.getReference(configurerBean,
+                            I18nConfigurer.class, beanManager.createCreationalContext(configurerBean));
+                    configurer.configure(at, instance);
+                }
             }
         }
 

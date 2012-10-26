@@ -21,6 +21,7 @@
         <module>../i18n4vaadin-api</module>
         <module>../i18n4vaadin-cdi</module>
         <module>../i18n4vaadin-demo</module>
+        <module>../i18n4vaadin-simple</module>
     </modules>
     
     <dependencyManagement>

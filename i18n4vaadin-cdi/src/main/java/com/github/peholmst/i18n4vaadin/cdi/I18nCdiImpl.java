@@ -17,9 +17,12 @@ package com.github.peholmst.i18n4vaadin.cdi;
 
 import com.github.peholmst.i18n4vaadin.I18N;
 import com.github.peholmst.i18n4vaadin.LocaleChangedEvent;
+import com.github.peholmst.i18n4vaadin.LocaleChangedListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -41,8 +44,8 @@ public class I18nCdiImpl implements I18N {
     private static final Logger log = Logger.getLogger(I18nCdiImpl.class.getName());
     private Set<Locale> supportedLocales;
     private Locale locale;
-    @Inject
-    Event<LocaleChangedEvent> localeChangedEvent;
+    @Inject Event<LocaleChangedEvent> localeChangedEvent;
+    private List<LocaleChangedListener> listeners = new LinkedList<LocaleChangedListener>();
 
     public I18nCdiImpl() {
         supportedLocales = new HashSet<Locale>();
@@ -69,7 +72,11 @@ public class I18nCdiImpl implements I18N {
     private void doSetLocale(final Locale locale) {
         log.log(Utils.logLevel, "Setting locale to {0} and firing LocaleChangedEvent", locale);
         this.locale = locale;
-        localeChangedEvent.fire(new LocaleChangedEvent(this, locale));
+        final LocaleChangedEvent event = new LocaleChangedEvent(this, locale);
+        localeChangedEvent.fire(event);
+        for (LocaleChangedListener listener : new LinkedList<LocaleChangedListener>(listeners)) {
+            listener.localeChanged(event);
+        }
     }
 
     @Override
@@ -93,5 +100,15 @@ public class I18nCdiImpl implements I18N {
                 doSetLocale(supportedLocales.iterator().next());
             }
         }
+    }
+
+    @Override
+    public void addLocaleChangedListener(LocaleChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeLocaleChangedListener(LocaleChangedListener listener) {
+        listeners.remove(listener);
     }
 }

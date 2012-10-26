@@ -20,12 +20,8 @@ import java.util.Locale;
 
 /**
  * The I18N instance maintains information about the supported locales and the
- * currently selected locale. <p> Clients can use CDI to access the current
- * I18N. The scope of the I18N instance is implementation-specific. <p> When the
- * locale changes, the I18N must post a {@link LocaleChangedEvent} using CDI.
- * The scope of the event is implementation-specific. <p> Implementations for
- * environments without CDI are also allowed. In this case, clients need to be
- * able to retrieve the I18N instance and listen for the events in another way.
+ * currently selected locale. When the locale changes, the I18N must fire a
+ * {@link LocaleChangedEvent}.
  *
  * @author Petter Holmström
  */
@@ -67,4 +63,8 @@ public interface I18N extends java.io.Serializable {
      * {@code null} or empty.
      */
     void setSupportedLocales(Collection<Locale> supportedLocales);
+
+    void addLocaleChangedListener(LocaleChangedListener listener);
+
+    void removeLocaleChangedListener(LocaleChangedListener listener);
 }

@@ -32,12 +32,15 @@ import org.apache.velocity.VelocityContext;
  */
 class JavaFileGenerator extends AbstractFileGenerator {
 
-    // TODO Add support for generating bundles without CDI
     final Template cdiTemplate;
 
     JavaFileGenerator(ProcessingEnvironment processingEnv) {
         super(processingEnv);
-        cdiTemplate = velocityEngine.getTemplate(PACKAGE_PATH + "/BundleWithCDI.vm");
+        if (processingEnv.getOptions().containsKey("cdisupport")) {
+            cdiTemplate = velocityEngine.getTemplate(PACKAGE_PATH + "/BundleWithCDI.vm");
+        } else {
+            cdiTemplate = velocityEngine.getTemplate(PACKAGE_PATH + "/BundleWithoutCDI.vm");            
+        }
     }
 
     @Override

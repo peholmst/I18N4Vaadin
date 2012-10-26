@@ -1,41 +1,24 @@
 package ${packageName};
 
-import com.github.peholmst.i18n4vaadin.I18N;
-import com.github.peholmst.i18n4vaadin.LocaleChangedEvent;
+import com.github.peholmst.i18n4vaadin.util.I18NHolder;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.annotation.Generated;
-import javax.enterprise.context.SessionScoped;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
-import javax.inject.Inject;
 
 /**
  * Please note that this class is not thread safe! Invocations from multiple
  * threads must be synchronized!
  */
 @Generated(value = "${generator}", date = "${generationDate}")
-@SessionScoped
 public class Bundle implements java.io.Serializable {
 
-    private transient ResourceBundle bundle;
-
-    @Inject I18N i18n;
-
-    private Locale getLocale() {
-        return i18n.getLocale();
+    protected Locale getLocale() {
+        return I18NHolder.get().getLocale();
     }
 
-    void localeChanged(@Observes(notifyObserver = Reception.IF_EXISTS) LocaleChangedEvent event) {
-        bundle = null;
-    }
-
-    ResourceBundle getBundle() {
-        if (bundle == null) {
-            bundle = ResourceBundle.getBundle("${packageName}.messages", getLocale());
-        }
-        return bundle;
+    protected ResourceBundle getBundle() {
+        return ResourceBundle.getBundle("${packageName}.messages", getLocale());
     }
 
 #foreach ($property in $properties)

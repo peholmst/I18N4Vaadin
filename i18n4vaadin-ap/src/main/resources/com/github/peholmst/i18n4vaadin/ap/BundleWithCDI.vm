@@ -4,6 +4,7 @@ import com.github.peholmst.i18n4vaadin.I18N;
 import com.github.peholmst.i18n4vaadin.LocaleChangedEvent;
 import java.text.MessageFormat;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javax.annotation.Generated;
 import javax.enterprise.context.SessionScoped;
@@ -54,7 +55,11 @@ public class Bundle implements java.io.Serializable {
     }
 
     public String getMessage(String key, Object... args) {
-        final MessageFormat mf = new MessageFormat(getBundle().getString(key), getLocale());
-        return mf.format(args, new StringBuffer(), null).toString();
+        try {
+            final MessageFormat mf = new MessageFormat(getBundle().getString(key), getLocale());
+            return mf.format(args, new StringBuffer(), null).toString();
+        } catch (MissingResourceException e) {
+            return "!" + key;
+        }
     }
 }

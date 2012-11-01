@@ -18,7 +18,7 @@ import javax.inject.Inject;
  */
 @Generated(value = "${generator}", date = "${generationDate}")
 @SessionScoped
-public class Bundle implements java.io.Serializable {
+public class ${classNamePrefix}Bundle implements java.io.Serializable {
 
     private transient ResourceBundle bundle;
 

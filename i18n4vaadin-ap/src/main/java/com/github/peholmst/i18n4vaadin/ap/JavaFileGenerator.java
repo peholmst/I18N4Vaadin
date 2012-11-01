@@ -19,7 +19,13 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -32,31 +38,38 @@ import org.apache.velocity.VelocityContext;
  */
 class JavaFileGenerator extends AbstractFileGenerator {
 
-    final Template cdiTemplate;
+    final Template template;
+    boolean generateOneBundlePerClass;
 
     JavaFileGenerator(ProcessingEnvironment processingEnv) {
         super(processingEnv);
         if (processingEnv.getOptions().containsKey("cdisupport")) {
-            cdiTemplate = velocityEngine.getTemplate(PACKAGE_PATH + "/BundleWithCDI.vm");
+            template = velocityEngine.getTemplate(PACKAGE_PATH + "/BundleWithCDI.vm");
         } else {
-            cdiTemplate = velocityEngine.getTemplate(PACKAGE_PATH + "/BundleWithoutCDI.vm");            
+            template = velocityEngine.getTemplate(PACKAGE_PATH + "/BundleWithoutCDI.vm");
         }
+        generateOneBundlePerClass = processingEnv.getOptions().containsKey("bundleperclass");
     }
 
     @Override
     void process(PackageMap packageMap) {
         for (final PackageInfo pkg : packageMap.getAllPackages()) {
-            processPackage(pkg, cdiTemplate);
+            if (generateOneBundlePerClass) {
+                processPackageMultipleBundles(pkg, template);
+            } else {
+                processPackageSingleBundle(pkg, template);
+            }
         }
     }
 
-    void processPackage(final PackageInfo packageInfo, final Template template) {
+    void processPackageSingleBundle(final PackageInfo packageInfo, final Template template) {
         final String packageName = packageInfo.getName();
         final VelocityContext vc = new VelocityContext();
         vc.put("packageName", packageName);
         vc.put("generator", getClass().getName());
         vc.put("generationDate", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(new Date()));
         vc.put("properties", packageInfo.getMessageKeys());
+        vc.put("classNamePrefix", "");
         try {
             JavaFileObject jfo = processingEnv.getFiler().createSourceFile(packageName + ".Bundle");
             Writer writer = jfo.openWriter();
@@ -64,6 +77,39 @@ class JavaFileGenerator extends AbstractFileGenerator {
             writer.close();
         } catch (IOException e) {
             throw new RuntimeException("Could not create source file", e);
+        }
+    }
+
+    void processPackageMultipleBundles(final PackageInfo packageInfo, final Template template) {
+        final String packageName = packageInfo.getName();
+        final VelocityContext vc = new VelocityContext();
+        vc.put("packageName", packageName);
+        vc.put("generator", getClass().getName());
+        vc.put("generationDate", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(new Date()));
+
+        final Map<TypeElement, List<String>> messageKeyMap = new HashMap<TypeElement, List<String>>();
+        for (Element element : packageInfo.getAnnotatedElements()) {
+            final TypeElement typeElement = Utils.getType(element);
+            List<String> messageKeys = messageKeyMap.get(typeElement);
+            if (messageKeys == null) {
+                messageKeys = new LinkedList<String>();
+                messageKeyMap.put(typeElement, messageKeys);
+            }
+            messageKeys.addAll(packageInfo.getMessageKeys(element));
+        }
+
+        for (Map.Entry<TypeElement, List<String>> entry : messageKeyMap.entrySet()) {
+            String className = entry.getKey().getSimpleName().toString();
+            vc.put("classNamePrefix", className);
+            vc.put("properties", entry.getValue());
+            try {
+                JavaFileObject jfo = processingEnv.getFiler().createSourceFile(packageName + "." + className + "Bundle");
+                Writer writer = jfo.openWriter();
+                template.merge(vc, writer);
+                writer.close();
+            } catch (IOException e) {
+                throw new RuntimeException("Could not create source file", e);
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ import javax.annotation.Generated;
  * threads must be synchronized!
  */
 @Generated(value = "${generator}", date = "${generationDate}")
-public class Bundle implements java.io.Serializable {
+public class ${classNamePrefix}Bundle implements java.io.Serializable {
 
     protected Locale getLocale() {
         return I18NHolder.get().getLocale();

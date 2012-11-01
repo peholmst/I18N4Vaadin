@@ -55,10 +55,10 @@ public class AnnotationProcessor extends AbstractProcessor {
         final PackageMap map = new PackageMap();
 
         for (final Element element : roundEnv.getElementsAnnotatedWith(Message.class)) {
-            map.getPackage(Utils.getPackage(element)).addMessage(element.getAnnotation(Message.class));
+            map.getPackage(Utils.getPackage(element)).addMessage(element.getAnnotation(Message.class), element);
         }
         for (final Element element : roundEnv.getElementsAnnotatedWith(Messages.class)) {
-            map.getPackage(Utils.getPackage(element)).addMessages(element.getAnnotation(Messages.class));
+            map.getPackage(Utils.getPackage(element)).addMessages(element.getAnnotation(Messages.class), element);
         }
 
         return map;

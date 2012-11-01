@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 
 /**
@@ -36,10 +37,31 @@ import javax.lang.model.element.PackageElement;
  */
 final class PackageInfo {
 
-    private final Map<Locale, List<Message>> messageMap = new HashMap<Locale, List<Message>>();
-    private final Set<String> messageKeys = new HashSet<String>();
+//    private final Map<Locale, List<Message>> messageMap = new HashMap<Locale, List<Message>>();
+//    private final Set<String> messageKeys = new HashSet<String>();
     private final PackageMap owner;
     private final PackageElement pkg;
+    private final Map<Element, ElementInfo> elements = new HashMap<Element, ElementInfo>();
+
+    private static class ElementInfo {
+
+        final Element element;
+        final Set<String> messageKeys = new HashSet<String>();
+        final Map<Locale, List<Message>> messageMap = new HashMap<Locale, List<Message>>();
+
+        ElementInfo(Element element) {
+            this.element = element;
+        }
+
+        void addMessage(Message message, Locale locale) {
+            List<Message> messageList = messageMap.get(locale);
+            if (messageList == null) {
+                messageList = new LinkedList<Message>();
+                messageMap.put(locale, messageList);
+            }
+            messageKeys.add(message.key());
+        }
+    }
 
     PackageInfo(PackageMap owner, PackageElement pkg) {
         this.owner = owner;
@@ -59,37 +81,68 @@ final class PackageInfo {
     }
 
     Set<Locale> getLocales() {
-        return Collections.unmodifiableSet(messageMap.keySet());
-    }
-
-    void addMessage(final Message message) {
-        final Locale locale = Utils.convertLocaleAnnotation(message.locale());
-        List<Message> messageList = messageMap.get(locale);
-        if (messageList == null) {
-            messageList = new LinkedList<Message>();
-            messageMap.put(locale, messageList);
+        Set<Locale> locales = new HashSet<Locale>();
+        for (ElementInfo elementInfo : elements.values()) {
+            locales.addAll(elementInfo.messageMap.keySet());
         }
-        messageKeys.add(message.key());
-        messageList.add(message);
+        return locales;
     }
 
-    void addMessages(final Messages messages) {
+    Set<Locale> getLocales(Element element) {
+        return Collections.unmodifiableSet(getElementInfo(element).messageMap.keySet());
+    }
+
+    Set<Element> getAnnotatedElements() {
+        return Collections.unmodifiableSet(elements.keySet());
+    }
+
+    void addMessage(final Message message, final Element declaringElement) {
+        final Locale locale = Utils.convertLocaleAnnotation(message.locale());
+        getElementInfo(declaringElement).addMessage(message, locale);
+    }
+
+    private ElementInfo getElementInfo(Element element) {
+        ElementInfo info = elements.get(element);
+        if (info == null) {
+            info = new ElementInfo(element);
+            elements.put(element, info);
+        }
+        return info;
+    }
+
+    void addMessages(final Messages messages, final Element declaringElement) {
         for (final Message msg : messages.value()) {
-            addMessage(msg);
+            addMessage(msg, declaringElement);
         }
     }
 
     List<Message> getMessages(final Locale locale) {
-        final List<Message> messageList = messageMap.get(locale);
+        final List<Message> messageList = new LinkedList<Message>();
+        for (Element element : elements.keySet()) {
+            messageList.addAll(getMessages(locale, element));
+        }
+        return messageList;
+    }
+
+    List<Message> getMessages(final Locale locale, Element element) {
+        final List<Message> messageList = getElementInfo(element).messageMap.get(locale);
         if (messageList == null) {
             return Collections.emptyList();
         } else {
             return Collections.unmodifiableList(messageList);
         }
     }
-    
+
     Set<String> getMessageKeys() {
-        return Collections.unmodifiableSet(messageKeys);
+        Set<String> messageKeys = new HashSet<String>();
+        for (Element element : elements.keySet()) {
+            messageKeys.addAll(getMessageKeys(element));
+        }
+        return messageKeys;
+    }
+
+    Set<String> getMessageKeys(Element element) {
+        return Collections.unmodifiableSet(getElementInfo(element).messageKeys);
     }
 
     PackageInfo getParent() {

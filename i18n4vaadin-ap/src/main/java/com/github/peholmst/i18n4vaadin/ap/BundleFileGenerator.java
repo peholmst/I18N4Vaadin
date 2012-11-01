@@ -34,7 +34,7 @@ import javax.tools.StandardLocation;
  * @author Petter Holmström
  */
 class BundleFileGenerator extends AbstractFileGenerator {
-
+    
     BundleFileGenerator(ProcessingEnvironment processingEnv) {
         super(processingEnv);
     }

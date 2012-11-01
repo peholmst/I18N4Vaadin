@@ -19,6 +19,7 @@ import com.github.peholmst.i18n4vaadin.annotations.Locale;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
 
 /**
  * Class containing different utility methods. <p><b>This class is internal and
@@ -40,6 +41,16 @@ final class Utils {
             return (PackageElement) element.getEnclosingElement();
         } else {
             return getPackage(element.getEnclosingElement());
+        }
+    }
+    
+    static TypeElement getType(final Element element) {
+        if (element == null) {
+            return null;
+        } else if (element.getKind() == ElementKind.CLASS || element.getKind() == ElementKind.INTERFACE) {
+            return (TypeElement) element;
+        } else {
+            return getType(element.getEnclosingElement());
         }
     }
 

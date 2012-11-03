@@ -102,6 +102,7 @@ class JavaFileGenerator extends AbstractFileGenerator {
             String className = entry.getKey().getSimpleName().toString();
             vc.put("classNamePrefix", className);
             vc.put("properties", entry.getValue());
+            System.out.println("Writing bundle class for type " + entry.getKey().getQualifiedName());
             try {
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(packageName + "." + className + "Bundle");
                 Writer writer = jfo.openWriter();

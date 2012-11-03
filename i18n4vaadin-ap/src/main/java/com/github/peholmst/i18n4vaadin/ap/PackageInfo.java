@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
 
 /**
  * Class containing information about the messages declared in one specific Java
@@ -59,6 +60,7 @@ final class PackageInfo {
                 messageList = new LinkedList<Message>();
                 messageMap.put(locale, messageList);
             }
+            messageList.add(message);
             messageKeys.add(message.key());
         }
     }
@@ -94,6 +96,14 @@ final class PackageInfo {
 
     Set<Element> getAnnotatedElements() {
         return Collections.unmodifiableSet(elements.keySet());
+    }
+    
+    Set<TypeElement> getAnnotatedTypeElements() {
+        Set<TypeElement> typeElements = new HashSet<TypeElement>();
+        for (Element element : elements.keySet()) {
+            typeElements.add(Utils.getType(element));
+        }
+        return typeElements;
     }
 
     void addMessage(final Message message, final Element declaringElement) {
@@ -132,6 +142,19 @@ final class PackageInfo {
             return Collections.unmodifiableList(messageList);
         }
     }
+    
+    List<Message> getMessagesForType(final Locale locale, TypeElement type) {
+        final List<Message> messageList = new LinkedList<Message>();
+        for (ElementInfo elementInfo : elements.values()) {
+            if (Utils.getType(elementInfo.element) == type) {
+                final List<Message> elementMessages = elementInfo.messageMap.get(locale);
+                if (elementMessages != null) {
+                    messageList.addAll(elementMessages);
+                }
+            }
+        }        
+        return messageList;
+    }
 
     Set<String> getMessageKeys() {
         Set<String> messageKeys = new HashSet<String>();
@@ -145,6 +168,17 @@ final class PackageInfo {
         return Collections.unmodifiableSet(getElementInfo(element).messageKeys);
     }
 
+    Set<String> getMessageKeysForType(TypeElement type) { 
+       Set<String> messageKeys = new HashSet<String>();
+       for (Element element : elements.keySet()) {
+            final TypeElement typeElement = Utils.getType(element);
+            if (typeElement == type) {
+                messageKeys.addAll(getMessageKeys(element));
+            }
+        }
+       return messageKeys;
+    }
+    
     PackageInfo getParent() {
         String packageName = pkg.getQualifiedName().toString();
         while (Utils.hasParentPackage(packageName)) {

@@ -34,7 +34,7 @@ public class ${classNamePrefix}Bundle implements java.io.Serializable {
 
     ResourceBundle getBundle() {
         if (bundle == null) {
-            bundle = ResourceBundle.getBundle("${packageName}.messages", getLocale());
+            bundle = ResourceBundle.getBundle("${packageName}.${classNamePrefix}messages", getLocale());
         }
         return bundle;
     }

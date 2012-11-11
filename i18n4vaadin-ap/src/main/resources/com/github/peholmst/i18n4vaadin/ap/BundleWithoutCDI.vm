@@ -45,4 +45,14 @@ public class ${classNamePrefix}Bundle implements java.io.Serializable {
             return "!" + key;
         }
     }
+
+    public static String getMessage(String key, Locale locale, Object... args) {
+        try {
+            ResourceBundle bundle = ResourceBundle.getBundle("${packageName}.${classNamePrefix}messages", locale);
+            final MessageFormat mf = new MessageFormat(bundle.getString(key), locale);
+            return mf.format(args, new StringBuffer(), null).toString();
+        } catch (MissingResourceException e) {
+            return "!" + key;
+        }
+    }
 }

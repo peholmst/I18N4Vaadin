@@ -21,6 +21,7 @@
         <module>../i18n4vaadin-api</module>
         <module>../i18n4vaadin-cdi</module>
         <module>../i18n4vaadin-simple</module>
+        <module>../distribution</module>
     </modules>
     
     <dependencyManagement>
@@ -66,6 +67,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>i18n4vaadin-simple</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>javax.enterprise</groupId>
                 <artifactId>cdi-api</artifactId>
                 <version>1.0</version>
@@ -87,7 +93,11 @@
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>2.4</version>
-                </plugin>              
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2.1</version>
+                </plugin>
                 <plugin>   
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
@@ -109,7 +119,18 @@
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
-            </plugin>            
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     

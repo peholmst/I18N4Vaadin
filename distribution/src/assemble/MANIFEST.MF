@@ -1,0 +1,3 @@
+Vaadin-Package-Version: 1
+Implementation-Title: I18N4Vaadin
+Implementation-Version: 2.0.0.beta1

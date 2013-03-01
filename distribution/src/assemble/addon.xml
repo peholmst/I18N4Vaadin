@@ -30,6 +30,13 @@
                 <include>*.jar</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <outputDirectory>META-INF</outputDirectory>
+            <directory>src/assemble</directory>
+            <includes>
+                <include>MANIFEST.MF</include>
+            </includes>
+        </fileSet>
     </fileSets>
     <dependencySets>
         <dependencySet>

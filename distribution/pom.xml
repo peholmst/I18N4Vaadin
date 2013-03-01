@@ -66,6 +66,8 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
+                            <finalName>i18n4vaadin-addon-${project.version}</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
                             <descriptors>
                                 <descriptor>src/assemble/addon.xml</descriptor>
                             </descriptors>

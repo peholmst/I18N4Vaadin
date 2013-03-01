@@ -1,24 +1,9 @@
 I18N4Vaadin 2.0 README
 ======================
-Copyright (c) 2011, 2012 Petter Holmström.
+Copyright (c) 2011, 2012, 2013 Petter Holmström.
 Licensed under the Apache License, Version 2.0
 
 I18N4Vaadin is a small add-on for Vaadin intented to make it easier to create localized applications.
 Version 2.0 is designed for Vaadin 7 and CDI.
 
-BUILDING I18N4Vaadin 2.0
-------------------------
-
-In order to build I18N4Vaadin, you need Java SDK 6 and Maven 3.
-
-Fire up a command line and execute the following commands:
-
-  $ cd parent
-  $ mvn install
-  
-
-USING I18N4Vaadin 2.0
----------------------
-
-Documentation has not been written yet as the project is still in alpha-stage.
-  
+Please see the project wiki for installation and usage instructions.

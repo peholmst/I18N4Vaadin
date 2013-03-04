@@ -1,7 +1,2 @@
-/i18n4vaadin-ap/target/
-/i18n4vaadin-api/target/
-/i18n4vaadin-cdi/target/
-/i18n4vaadin-ap-test/target/
-/i18n4vaadin-demo/target/
-/i18n4vaadin-simple/target/
-/distribution/target/
+target/
+rebel.xml

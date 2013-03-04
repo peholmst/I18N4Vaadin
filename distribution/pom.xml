@@ -26,7 +26,19 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>i18n4vaadin-cdi-demo</artifactId>
+            <type>war</type>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>i18n4vaadin-simple</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>i18n4vaadin-simple-demo</artifactId>
+            <type>war</type>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

@@ -22,6 +22,7 @@
         <module>../i18n4vaadin-cdi</module>
         <module>../i18n4vaadin-simple</module>
         <module>../i18n4vaadin-cdi-demo</module>
+        <module>../i18n4vaadin-simple-demo</module>
         <module>../distribution</module>
     </modules>
     

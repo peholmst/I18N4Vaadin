@@ -32,6 +32,14 @@ final class Utils {
     private Utils() {
     }
 
+    static boolean stringToBoolean(String str) {
+        if (str == null) {
+            return false;
+        } else {
+            return Boolean.parseBoolean(str);
+        }
+    }
+
     static PackageElement getPackage(final Element element) {
         if (element == null) {
             return null;

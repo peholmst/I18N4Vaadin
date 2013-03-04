@@ -43,12 +43,12 @@ class JavaFileGenerator extends AbstractFileGenerator {
 
     JavaFileGenerator(ProcessingEnvironment processingEnv) {
         super(processingEnv);
-        if (processingEnv.getOptions().containsKey("cdisupport")) {
+        if (Utils.stringToBoolean(processingEnv.getOptions().get("cdisupport"))) {
             template = velocityEngine.getTemplate(PACKAGE_PATH + "/BundleWithCDI.vm");
         } else {
             template = velocityEngine.getTemplate(PACKAGE_PATH + "/BundleWithoutCDI.vm");
         }
-        generateOneBundlePerClass = processingEnv.getOptions().containsKey("bundleperclass");
+        generateOneBundlePerClass = Utils.stringToBoolean(processingEnv.getOptions().get("bundleperclass"));
     }
 
     @Override

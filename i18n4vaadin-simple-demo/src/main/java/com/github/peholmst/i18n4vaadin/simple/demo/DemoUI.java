@@ -97,7 +97,7 @@ public class DemoUI extends UI implements LocaleChangedListener, I18NProvider {
     }
 
     @Messages({
-        @Message(key = "application.title", value = "I18N4Vaadin CDI Demo Application"),
+        @Message(key = "application.title", value = "I18N4Vaadin Simple Demo Application"),
         @Message(key = "languageChanger.caption", value = "Change language")
     })
     private void updateStrings() {

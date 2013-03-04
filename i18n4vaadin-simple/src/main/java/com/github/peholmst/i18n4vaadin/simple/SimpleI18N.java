@@ -19,6 +19,8 @@ import com.github.peholmst.i18n4vaadin.I18N;
 import com.github.peholmst.i18n4vaadin.LocaleChangedEvent;
 import com.github.peholmst.i18n4vaadin.LocaleChangedListener;
 import com.github.peholmst.i18n4vaadin.util.I18NHolder;
+import com.github.peholmst.i18n4vaadin.util.I18NProvider;
+import com.vaadin.ui.UI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,7 +32,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * TODO Document me!
+ * Implementation of {@link I18N} that is intended to be instantiated by your
+ * {@link UI}. The instance should then be made available to the
+ * {@link I18NHolder}. The easiest way is to have your UI implement
+ * {@link I18NProvider} and then use {@link I18NProvidingUIStrategy}.
  *
  * @author Petter Holmström
  */
@@ -42,12 +47,31 @@ public class SimpleI18N implements I18N {
     private List<LocaleChangedListener> listeners = new LinkedList<LocaleChangedListener>();
 
     /**
+     * Creates a new {@code SimpleI18N} instance with the default locale as the
+     * current and only supported locale.
      *
+     * @see Locale#getDefault()
      */
     public SimpleI18N() {
         supportedLocales = new HashSet<Locale>();
         locale = Locale.getDefault();
         supportedLocales.add(locale);
+    }
+
+    /**
+     * Creates a new {@code SimpleI18N} instance with the specified supported
+     * locales (must contain at least one locale). The current locale will be
+     * set to the first locale returned by the iterator of the supported locales
+     * collection.
+     */
+    public SimpleI18N(final Collection<Locale> supportedLocales) {
+        if (supportedLocales == null) {
+            throw new IllegalArgumentException("supportedLocales must not be null");
+        } else if (supportedLocales.isEmpty()) {
+            throw new IllegalArgumentException("At least one supported locale must be specified");
+        }
+        this.supportedLocales = new HashSet<Locale>(supportedLocales);
+        locale = supportedLocales.iterator().next();
     }
 
     @Override
@@ -109,8 +133,7 @@ public class SimpleI18N implements I18N {
     }
 
     /**
-     *
-     * @return
+     * Returns the current I18N instance, or {@code null} if none is available.
      */
     public static I18N getCurrent() {
         return I18NHolder.get();

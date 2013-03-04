@@ -17,6 +17,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>i18n4vaadin-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-server</artifactId>
+        </dependency>
     </dependencies>
     
     <build>

@@ -21,6 +21,7 @@
         <module>../i18n4vaadin-api</module>
         <module>../i18n4vaadin-cdi</module>
         <module>../i18n4vaadin-simple</module>
+        <module>../i18n4vaadin-cdi-demo</module>
         <module>../distribution</module>
     </modules>
     
@@ -38,7 +39,7 @@
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-themes-compiled</artifactId>
+                <artifactId>vaadin-themes</artifactId>
                 <version>${vaadin.version}</version>
             </dependency>
             <dependency>
@@ -84,7 +85,7 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
+                    <version>3.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
@@ -93,6 +94,10 @@
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.3</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>

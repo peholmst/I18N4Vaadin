@@ -97,7 +97,7 @@ final class PackageInfo {
     Set<Element> getAnnotatedElements() {
         return Collections.unmodifiableSet(elements.keySet());
     }
-    
+
     Set<TypeElement> getAnnotatedTypeElements() {
         Set<TypeElement> typeElements = new HashSet<TypeElement>();
         for (Element element : elements.keySet()) {
@@ -107,8 +107,12 @@ final class PackageInfo {
     }
 
     void addMessage(final Message message, final Element declaringElement) {
-        final Locale locale = Utils.convertLocaleAnnotation(message.locale());
-        getElementInfo(declaringElement).addMessage(message, locale);
+        if (message != null) {
+            final Locale locale = Utils.convertLocaleAnnotation(message.locale());
+            getElementInfo(declaringElement).addMessage(message, locale);
+        } else {
+            System.err.println("Tried to add null @Message declared in " + declaringElement);
+        }
     }
 
     private ElementInfo getElementInfo(Element element) {
@@ -121,8 +125,12 @@ final class PackageInfo {
     }
 
     void addMessages(final Messages messages, final Element declaringElement) {
-        for (final Message msg : messages.value()) {
-            addMessage(msg, declaringElement);
+        if (messages != null) {
+            for (final Message msg : messages.value()) {
+                addMessage(msg, declaringElement);
+            }
+        } else {
+            System.err.println("Tried to add null @Messages declared in " + declaringElement);
         }
     }
 
@@ -142,7 +150,7 @@ final class PackageInfo {
             return Collections.unmodifiableList(messageList);
         }
     }
-    
+
     List<Message> getMessagesForType(final Locale locale, TypeElement type) {
         final List<Message> messageList = new LinkedList<Message>();
         for (ElementInfo elementInfo : elements.values()) {
@@ -152,7 +160,7 @@ final class PackageInfo {
                     messageList.addAll(elementMessages);
                 }
             }
-        }        
+        }
         return messageList;
     }
 
@@ -168,17 +176,17 @@ final class PackageInfo {
         return Collections.unmodifiableSet(getElementInfo(element).messageKeys);
     }
 
-    Set<String> getMessageKeysForType(TypeElement type) { 
-       Set<String> messageKeys = new HashSet<String>();
-       for (Element element : elements.keySet()) {
+    Set<String> getMessageKeysForType(TypeElement type) {
+        Set<String> messageKeys = new HashSet<String>();
+        for (Element element : elements.keySet()) {
             final TypeElement typeElement = Utils.getType(element);
             if (typeElement == type) {
                 messageKeys.addAll(getMessageKeys(element));
             }
         }
-       return messageKeys;
+        return messageKeys;
     }
-    
+
     PackageInfo getParent() {
         String packageName = pkg.getQualifiedName().toString();
         while (Utils.hasParentPackage(packageName)) {

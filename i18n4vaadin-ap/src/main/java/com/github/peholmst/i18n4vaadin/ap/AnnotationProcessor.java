@@ -55,10 +55,16 @@ public class AnnotationProcessor extends AbstractProcessor {
         final PackageMap map = new PackageMap();
 
         for (final Element element : roundEnv.getElementsAnnotatedWith(Message.class)) {
-            map.getPackage(Utils.getPackage(element)).addMessage(element.getAnnotation(Message.class), element);
+            /* Apparently, on some occasions elements without the @Message annotation can be included in the set. */
+            if (element.getAnnotation(Message.class) != null) {
+                map.getPackage(Utils.getPackage(element)).addMessage(element.getAnnotation(Message.class), element);
+            }
         }
         for (final Element element : roundEnv.getElementsAnnotatedWith(Messages.class)) {
-            map.getPackage(Utils.getPackage(element)).addMessages(element.getAnnotation(Messages.class), element);
+            /* Apparently, on some occasions elements without the @Message annotation can be included in the set. */
+            if (element.getAnnotation(Messages.class) != null) {
+                map.getPackage(Utils.getPackage(element)).addMessages(element.getAnnotation(Messages.class), element);
+            }
         }
 
         return map;

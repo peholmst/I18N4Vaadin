@@ -19,7 +19,7 @@ import com.github.peholmst.i18n4vaadin.I18N;
 import com.github.peholmst.i18n4vaadin.LocaleChangedEvent;
 import com.github.peholmst.i18n4vaadin.LocaleChangedListener;
 import com.github.peholmst.i18n4vaadin.annotations.Message;
-import com.vaadin.cdi.VaadinView;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Button;
@@ -34,7 +34,7 @@ import javax.inject.Inject;
  *
  * @author Petter Holmström
  */
-@VaadinView(value = "demo")
+@CDIView(value = "demo")
 public class DemoView extends VerticalLayout implements View, LocaleChangedListener {
 
     @Message(key = "name.caption", value = "What is your name?")

@@ -24,7 +24,7 @@ import com.github.peholmst.i18n4vaadin.annotations.Messages;
 import com.github.peholmst.i18n4vaadin.cdi.annotations.I18nSupportedLocales;
 import com.vaadin.cdi.CDIViewProvider;
 import com.vaadin.cdi.Root;
-import com.vaadin.cdi.VaadinUI;
+import com.vaadin.cdi.CDIUI;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.Navigator;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
  *
  * @author Petter Holmström
  */
-@VaadinUI
+@CDIUI
 @Root
 public class DemoUI extends UI implements LocaleChangedListener {
 

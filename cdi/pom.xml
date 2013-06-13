@@ -19,6 +19,8 @@
         <module>annotation-processor</module>
         <module>implementation</module>
         <module>demo</module>
+        <module>tests-bundle-per-class</module>
+        <module>tests-bundle-per-package</module>
     </modules>
 
     <dependencyManagement>

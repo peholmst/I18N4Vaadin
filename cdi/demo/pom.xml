@@ -48,9 +48,6 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>${project.build.source}</source>
-                    <target>${project.build.target}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
                     <compilerArguments>
                         <Abundleperclass>true</Abundleperclass>
                     </compilerArguments>

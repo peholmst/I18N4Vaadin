@@ -6,7 +6,7 @@
         <artifactId>parent</artifactId>
         <version>2.0.0.beta4</version>
     </parent>
-    <artifactId>sample-classes</artifactId>
+    <artifactId>i18n4vaadin-ap-tests-sample-classes</artifactId>
     <packaging>jar</packaging>
     <name>I18N4Vaadin Sample Classes for Annotation Processor Tests</name>
 

@@ -15,8 +15,8 @@
         <module>annotation-processor</module>
         <module>implementation</module>
         <module>demo</module>
-        <!--<module>tests-bundle-per-class</module>
-        <module>tests-bundle-per-package</module>-->
+        <module>tests-bundle-per-class</module>
+        <module>tests-bundle-per-package</module>
     </modules>
 
     <dependencyManagement>
@@ -31,27 +31,6 @@
                 <artifactId>i18n4vaadin-simple-ap</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
-<!--            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-cdi</artifactId>
-                <version>${vaadin-cdi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.enterprise</groupId>
-                <artifactId>cdi-api</artifactId>
-                <version>1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.root.groupId}</groupId>
-                <artifactId>i18n4vaadin-cdi</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.root.groupId}</groupId>
-                <artifactId>i18n4vaadin-cdi-ap</artifactId>
-                <version>${project.version}</version>
-            </dependency>-->
         </dependencies>
     </dependencyManagement>
 

@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.JavaFileObject;
 import org.apache.velocity.Template;
@@ -32,6 +34,7 @@ import org.apache.velocity.VelocityContext;
  */
 public class JavaFileGenerator {
 
+    private static final Logger LOG = Logger.getLogger(JavaFileGenerator.class.getCanonicalName());
     protected final Template template;
     protected final ProcessingEnvironment processingEnv;
     protected final PackageDescriptor destinationPackage;
@@ -50,13 +53,16 @@ public class JavaFileGenerator {
 
     public void createFile() {
         final VelocityContext vc = createAndInitVelocityContext();
+        final String fullClassName = destinationPackage.getName() + "." + className;
+        LOG.log(Level.INFO, "Creating Java file {0}", fullClassName);
         try {
-            JavaFileObject jfo = processingEnv.getFiler().createSourceFile(destinationPackage.getName() + "." + className);
+            JavaFileObject jfo = processingEnv.getFiler().createSourceFile(fullClassName);
             Writer writer = jfo.openWriter();
             template.merge(vc, writer);
             writer.close();
         } catch (IOException e) {
-            throw new RuntimeException("Could not create source file", e);
+            LOG.log(Level.SEVERE, "Could not create source file " + fullClassName, e);
+            throw new RuntimeException(e);
         }
     }
 

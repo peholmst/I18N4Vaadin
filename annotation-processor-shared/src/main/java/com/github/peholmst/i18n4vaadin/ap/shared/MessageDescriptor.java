@@ -52,4 +52,8 @@ public class MessageDescriptor {
     public String getKey() {
         return messageAnnotation.key();
     }
+
+    public String getValue() {
+        return messageAnnotation.value();
+    }
 }

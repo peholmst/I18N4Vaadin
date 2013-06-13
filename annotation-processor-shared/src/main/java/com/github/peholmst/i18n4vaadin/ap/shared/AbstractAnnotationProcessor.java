@@ -20,7 +20,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -33,7 +32,6 @@ import org.apache.velocity.app.VelocityEngine;
 public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
 
     public static final String ANNOTATION_PACKAGE = "com.github.peholmst.i18n4vaadin.annotations";
-    private static final Logger LOG = Logger.getLogger(AbstractAnnotationProcessor.class.getCanonicalName());
     private VelocityEngine engine;
 
     protected abstract Template getJavaClassTemplate(VelocityEngine engine);
@@ -65,6 +63,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     private void generateFilesPerPackage(Collection<PackageDescriptor> packages) {
         for (PackageDescriptor pkg : packages) {
             createJavaFileGeneratorForPackageBundle(pkg).createFile();
+            createBundleFileGeneratorForPackageBundle(pkg).createFiles();
         }
     }
 
@@ -72,6 +71,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
         for (PackageDescriptor pkg : packages) {
             for (TypeDescriptor type : pkg.getTypes()) {
                 createJavaFileGeneratorForClassBundle(type).createFile();
+                createBundleFileGeneratorForClassBundle(type).createFiles();
             }
         }
     }
@@ -80,7 +80,15 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
         return new JavaFileGenerator(processingEnv, getJavaClassTemplate(engine), pkg, "Bundle", "messages", pkg.getOwnMessagesAndTypeMessages());
     }
 
+    protected BundleFileGenerator createBundleFileGeneratorForPackageBundle(PackageDescriptor pkg) {
+        return new BundleFileGenerator(processingEnv, pkg, "messages", pkg.getOwnMessagesAndTypeMessages());
+    }
+
     protected JavaFileGenerator createJavaFileGeneratorForClassBundle(TypeDescriptor type) {
         return new JavaFileGenerator(processingEnv, getJavaClassTemplate(engine), type.getPackage(), type.getSimpleName() + "Bundle", type.getSimpleName() + "Messages", type.getMessages());
+    }
+
+    protected BundleFileGenerator createBundleFileGeneratorForClassBundle(TypeDescriptor type) {
+        return new BundleFileGenerator(processingEnv, type.getPackage(), type.getSimpleName() + "Messages", type.getMessages());
     }
 }

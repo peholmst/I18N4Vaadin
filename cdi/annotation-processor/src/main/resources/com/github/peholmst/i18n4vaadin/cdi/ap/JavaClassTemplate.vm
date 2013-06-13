@@ -1,0 +1,75 @@
+package ${packageName};
+
+import com.github.peholmst.i18n4vaadin.I18N;
+import com.github.peholmst.i18n4vaadin.LocaleChangedEvent;
+import java.text.MessageFormat;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import javax.annotation.Generated;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
+import javax.inject.Inject;
+
+/**
+ * Please note that this class is not thread safe! Invocations from multiple
+ * threads must be synchronized!
+ */
+@Generated(value = "${generator}", date = "${generationDate}")
+@SessionScoped
+public class ${className} implements java.io.Serializable {
+
+    private transient ResourceBundle bundle;
+
+    @Inject I18N i18n;
+
+    private Locale getLocale() {
+        return i18n.getLocale();
+    }
+
+    void localeChanged(@Observes(notifyObserver = Reception.IF_EXISTS) LocaleChangedEvent event) {
+        bundle = null;
+    }
+
+    ResourceBundle getBundle() {
+        if (bundle == null) {
+            bundle = ResourceBundle.getBundle("${packageName}.${bundleName}", getLocale());
+        }
+        return bundle;
+    }
+
+#foreach ($message_key in ${messages.allMessageKeys})
+    public String $message_key.replace('.','_')(Object... args) {
+        return getMessage("$message_key", args);
+    }
+#end
+
+    public static final class Keys {
+
+        private Keys() {
+        }
+#foreach ($message_key in ${messages.allMessageKeys})
+        public static final String $message_key.replace('.','_') = "$message_key";
+#end
+    }
+
+    public String getMessage(String key, Object... args) {
+        try {
+            final MessageFormat mf = new MessageFormat(getBundle().getString(key), getLocale());
+            return mf.format(args, new StringBuffer(), null).toString();
+        } catch (MissingResourceException e) {
+            return "!" + key;
+        }
+    }
+
+    public static String getMessage(String key, Locale locale, Object... args) {
+        try {
+            ResourceBundle bundle = ResourceBundle.getBundle("${packageName}.${bundleName}", locale);
+            final MessageFormat mf = new MessageFormat(bundle.getString(key), locale);
+            return mf.format(args, new StringBuffer(), null).toString();
+        } catch (MissingResourceException e) {
+            return "!" + key;
+        }
+    }
+}

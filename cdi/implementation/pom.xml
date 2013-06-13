@@ -8,7 +8,7 @@
     </parent>
     <artifactId>i18n4vaadin-cdi</artifactId>
     <packaging>jar</packaging>
-    <name>I18N4Vaadin CDI Support</name>
+    <name>I18N4Vaadin CDI Implementation</name>
 
     <dependencies>
         <dependency>

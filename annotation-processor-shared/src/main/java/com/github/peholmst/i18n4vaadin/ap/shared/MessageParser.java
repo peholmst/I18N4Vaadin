@@ -55,6 +55,10 @@ public class MessageParser {
     }
 
     private void addMessage(Message message, Element declaringElement) {
+        if (message == null) {
+            LOG.log(Level.WARNING, "Tried to add null Message annotation, ignoring");
+            return;
+        }
         LOG.log(Level.INFO, "Adding message {0} declared by {1}", new Object[]{message, declaringElement});
         getMessageOwnerForElement(declaringElement).addMessage(new MessageDescriptor(message));
     }

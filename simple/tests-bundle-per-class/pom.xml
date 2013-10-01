@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.peholmst.i18n4vaadin</groupId>
         <artifactId>simple-parent</artifactId>
-        <version>2.0.0.beta4</version>
+        <version>2.0.0</version>
     </parent>
     <artifactId>i18n4vaadin-simple-ap-tests-bundle-per-class</artifactId>
     <packaging>jar</packaging>

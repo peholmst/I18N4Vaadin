@@ -12,9 +12,11 @@
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
                 <include>*:i18n4vaadin-api:*</include>
-                <include>*:i18n4vaadin-ap:*</include>
+                <include>*:i18n4vaadin-ap-shared:*</include>
                 <include>*:i18n4vaadin-cdi:*</include>
+                <include>*:i18n4vaadin-cdi-ap:*</include>
                 <include>*:i18n4vaadin-simple:*</include>
+                <include>*:i18n4vaadin-simple-ap:*</include>
             </includes>
             <binaries>
                 <unpack>false</unpack>

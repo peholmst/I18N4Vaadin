@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.peholmst.i18n4vaadin</groupId>
     <artifactId>parent</artifactId>
-    <version>2.0.0.beta4</version>
+    <version>2.0.0</version>
     <packaging>pom</packaging>
     <name>I18N4Vaadin Parent POM</name>
 
@@ -11,7 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.source>1.6</project.build.source>
         <project.build.target>1.6</project.build.target>
-        <vaadin.version>7.1.0.beta1</vaadin.version>
+        <vaadin.version>7.1.6</vaadin.version>
         <project.root.groupId>com.github.peholmst.i18n4vaadin</project.root.groupId>
     </properties>
 
@@ -21,7 +21,7 @@
         <module>annotation-processor-tests-sample-classes</module>
         <module>cdi</module>
         <module>simple</module>
-        <!--<module>distribution</module>-->
+        <module>distribution</module>
     </modules>
 
     <dependencyManagement>

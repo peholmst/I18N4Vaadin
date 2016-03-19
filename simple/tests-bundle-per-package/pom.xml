@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.github.peholmst.i18n4vaadin</groupId>
+        <groupId>net.pkhapps.i18n4vaadin</groupId>
         <artifactId>simple-parent</artifactId>
-        <version>2.0.0</version>
+        <version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>i18n4vaadin-simple-ap-tests-bundle-per-package</artifactId>
     <packaging>jar</packaging>
@@ -51,7 +51,8 @@
                                     <version>${project.version}</version>
                                     <classifier>sources</classifier>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/generated-sources/samples</outputDirectory>
+                                    <outputDirectory>${project.build.directory}/generated-sources/samples
+                                    </outputDirectory>
                                     <excludes>META-INF/*</excludes>
                                 </artifactItem>
                             </artifactItems>

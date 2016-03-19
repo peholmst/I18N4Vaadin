@@ -1,18 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.peholmst.i18n4vaadin</groupId>
+    <groupId>net.pkhapps.i18n4vaadin</groupId>
     <artifactId>parent</artifactId>
-    <version>2.0.0</version>
+    <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>I18N4Vaadin Parent POM</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.source>1.6</project.build.source>
-        <project.build.target>1.6</project.build.target>
-        <vaadin.version>7.1.6</vaadin.version>
-        <project.root.groupId>com.github.peholmst.i18n4vaadin</project.root.groupId>
+        <project.build.source>1.8</project.build.source>
+        <project.build.target>1.8</project.build.target>
+        <vaadin.version>7.6.4</vaadin.version>
+        <project.root.groupId>net.pkhapps.i18n4vaadin</project.root.groupId>
     </properties>
 
     <modules>

@@ -1,3 +1,6 @@
+[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/i18n4vaadin)
+[![Stars on Vaadin Directory](https://img.shields.io/vaadin-directory/star/i18n4vaadin.svg)](https://vaadin.com/directory/component/i18n4vaadin)
+
 I18N4Vaadin 2.0 README
 ======================
 Copyright (c) 2011, 2012, 2013 Petter Holmström.
